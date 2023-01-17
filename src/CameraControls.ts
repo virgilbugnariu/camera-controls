@@ -1924,6 +1924,7 @@ export class CameraControls extends EventDispatcher {
 			enableTransition,
 		);
 
+		// see https://github.com/yomotsu/camera-controls/issues/335
 		this._sphericalEnd.phi = THREE.MathUtils.clamp( this.polarAngle, this.minPolarAngle, this.maxPolarAngle );
 
 		return promise;

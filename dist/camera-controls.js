@@ -1546,6 +1546,7 @@
 	    setTarget(targetX, targetY, targetZ, enableTransition = false) {
 	        const pos = this.getPosition(_v3A);
 	        const promise = this.setLookAt(pos.x, pos.y, pos.z, targetX, targetY, targetZ, enableTransition);
+	        // see https://github.com/yomotsu/camera-controls/issues/335
 	        this._sphericalEnd.phi = THREE.MathUtils.clamp(this.polarAngle, this.minPolarAngle, this.maxPolarAngle);
 	        return promise;
 	    }
