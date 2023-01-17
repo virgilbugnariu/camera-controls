@@ -1465,7 +1465,6 @@
 	        this._targetEnd.copy(target);
 	        this._sphericalEnd.setFromVector3(position.sub(target).applyQuaternion(this._yAxisUpSpace));
 	        this.normalizeRotations();
-	        this._sphericalEnd.phi = THREE.MathUtils.clamp(this.polarAngle, this.minPolarAngle, this.maxPolarAngle);
 	        this._needsUpdate = true;
 	        if (!enableTransition) {
 	            this._target.copy(this._targetEnd);
@@ -1546,7 +1545,9 @@
 	     */
 	    setTarget(targetX, targetY, targetZ, enableTransition = false) {
 	        const pos = this.getPosition(_v3A);
-	        return this.setLookAt(pos.x, pos.y, pos.z, targetX, targetY, targetZ, enableTransition);
+	        const promise = this.setLookAt(pos.x, pos.y, pos.z, targetX, targetY, targetZ, enableTransition);
+	        this._sphericalEnd.phi = THREE.MathUtils.clamp(this.polarAngle, this.minPolarAngle, this.maxPolarAngle);
+	        return promise;
 	    }
 	    /**
 	     * Set focal offset using the screen parallel coordinates. z doesn't affect in Orthographic as with Dolly.

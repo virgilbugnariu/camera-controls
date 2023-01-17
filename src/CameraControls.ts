@@ -1799,8 +1799,6 @@ export class CameraControls extends EventDispatcher {
 		this._sphericalEnd.setFromVector3( position.sub( target ).applyQuaternion( this._yAxisUpSpace ) );
 		this.normalizeRotations();
 
-		this._sphericalEnd.phi = THREE.MathUtils.clamp( this.polarAngle, this.minPolarAngle, this.maxPolarAngle );
-
 		this._needsUpdate = true;
 
 		if ( ! enableTransition ) {
@@ -1919,13 +1917,18 @@ export class CameraControls extends EventDispatcher {
 	setTarget( targetX: number, targetY: number, targetZ: number, enableTransition: boolean = false ): Promise<void> {
 
 		const pos = this.getPosition( _v3A );
-		return this.setLookAt(
+
+		const promise = this.setLookAt(
 			pos.x, pos.y, pos.z,
 			targetX, targetY, targetZ,
 			enableTransition,
 		);
 
-	}
+		this._sphericalEnd.phi = THREE.MathUtils.clamp( this.polarAngle, this.minPolarAngle, this.maxPolarAngle );
+
+		return promise;
+
+}
 
 	/**
 	 * Set focal offset using the screen parallel coordinates. z doesn't affect in Orthographic as with Dolly.
